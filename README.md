@@ -58,24 +58,24 @@ This repository shows how to wrap even a **tiny Linear Regression model** in a c
 ## 4  Local Reproduction 
 
 
-### --- setup --------------------------------------------------------------
+--- setup --------------------------------------------------------------
 git clone https://github.com/<your-github-handle>/mlops-linear-reg.git
 cd mlops-linear-reg
 python -m venv .venv && source .venv/Scripts/activate      # PowerShell: .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 
-### --- tests --------------------------------------------------------------
+--- tests --------------------------------------------------------------
 pytest -q          # ... 3 passed
 
-### --- train + quantise ---------------------------------------------------
+--- train + quantise ---------------------------------------------------
 python -m src.train          # ✔ R² ~0.58
 python -m src.quantize       # ✔ Quantised parameters saved
 ls -lh artifacts
-### 1.1K linear_model.joblib
-### 234B quant_params.joblib
-### 146B scale.joblib
+1.1K linear_model.joblib
+234B quant_params.joblib
+146B scale.joblib
 
-### --- build & smoke test container --------------------------------------
+--- build & smoke test container --------------------------------------
 docker build -t cali-reg .
 docker run --rm cali-reg     # prints five predictions
 
