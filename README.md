@@ -1,6 +1,6 @@
 # 🏗️  Linear-Regression MLOps Pipeline — `cali-reg`
 
-![CI](https://github.com/<your-github-handle>/mlops-linear-reg/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/anup082002/mlops-linear-reg/actions/workflows/ci.yml/badge.svg)
 
 ---
 
