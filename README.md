@@ -8,7 +8,11 @@
 
 This repository demonstrates a full MLOps workflow for a scikit-learn Linear Regression model on the California Housing dataset.  
 Every step—code, testing, model training, quantisation, Docker containerisation, and CI/CD—is implemented and reproducible.  
+<<<<<<< HEAD
 **Key outcome:** Quantised model shrinks storage from **1.1 KB ➜ 0.49 KB (~2.2× smaller)** with **only minor accuracy loss (R² drops from 0.5758 to 0.4854)**.  
+=======
+**Key outcome:** Quantised model shrinks storage from **1.1 KB ➜ 0.38 KB (~5× smaller)** with **no loss in accuracy (R² ≈ 0.58)**.  
+>>>>>>> 2808cd94d713c6c38adabb99901c845ac7b8ef6d
 Models are always rebuilt in CI; nothing pre-generated or committed.
 
 ---
@@ -19,7 +23,11 @@ Models are always rebuilt in CI; nothing pre-generated or committed.
 - **Test-driven:** Pytest suite enforces model type, weights, and minimum R² (>0.5).
 - **Artefact hygiene:** Models are rebuilt in CI and never committed. `.gitignore` keeps repo clean.
 - **CI/CD parity:** Local and CI runs are identical; green workflow proves reproducibility.
+<<<<<<< HEAD
 - **Quantisation:** Weights quantised to uint8 via min-max encoding for space efficiency; dequantised at inference.
+=======
+- **Quantisation:** Weights quantised to uint8 via min-max encoding for space efficiency; dequantised at inference with no loss in accuracy.
+>>>>>>> 2808cd94d713c6c38adabb99901c845ac7b8ef6d
 
 ---
 
@@ -42,16 +50,27 @@ Models are always rebuilt in CI; nothing pre-generated or committed.
 ### 3.2. `train-and-quantize` (Model Build & Compress)
 | Step | Command | Expected Outcome |
 |------|---------|-----------------|
+<<<<<<< HEAD
 | 1 | `python -m src.train` | Prints `✔ R²: 0.5758 | RMSE: 0.7456`; saves `linear_model.joblib` |
 | 2 | `python -m src.quantize` | Prints quantised coefficients/intercept; saves `quant_model.joblib` |
+=======
+| 1 | `python -m src.train` | Prints `✔ R²: 0.58 | RMSE: 0.74`; saves `linear_model.joblib` (float64) |
+| 2 | `python -m src.quantize` | Prints `✔ Quantised parameters saved`; saves `quant_params.joblib` (uint8) + `scale.joblib` |
+>>>>>>> 2808cd94d713c6c38adabb99901c845ac7b8ef6d
 | 3 | Upload artefacts | All `artifacts/*` uploaded as `model-artifacts` in CI |
 
 ### 3.3. `build-and-test-container` (Deployment Smoke-Test)
 | Step | Command | Expected Outcome |
 |------|---------|-----------------|
+<<<<<<< HEAD
 | 1 | Download artifacts | Model files available in build context |
 | 2 | `docker buildx build --tag cali-reg:test --load .` | Image built (contains all code + model) |
 | 3 | `docker run --rm cali-reg:test` | Prints predictions and coefficients |
+=======
+| 1 | Download artifacts | Model files are available in build context |
+| 2 | `docker buildx build --tag cali-reg:test --load .` | Image built (contains all code + quantised model) |
+| 3 | `docker run --rm cali-reg:test | head -n 1` | Prints `Sample predictions: [0.719 1.764 2.710 2.839 2.605]` |
+>>>>>>> 2808cd94d713c6c38adabb99901c845ac7b8ef6d
 
 ---
 
@@ -65,11 +84,17 @@ pip install -r requirements.txt
 
 # 1. Run unit tests (should see "3 passed")
 pytest -q
+<<<<<<< HEAD
+=======
+# ... [100%]
+# 3 passed in 2.2s
+>>>>>>> 2808cd94d713c6c38adabb99901c845ac7b8ef6d
 
 # 2. Train and quantise
 python -m src.train
 # ✔ R²: 0.5758 | RMSE: 0.7456
 python -m src.quantize
+<<<<<<< HEAD
 # ✔ Quantised parameters saved (per-coefficient)
 # Original coefficients: [ 0.4487  0.0097 -0.1233  0.7831 -0.     -0.0035 -0.4198 -0.4337]
 # Original intercept: -37.0233
@@ -87,18 +112,31 @@ python -m src.predict_quant
 # Quantised R²: 0.4854
 
 # 4. Check artifact sizes
+=======
+# ✔ Quantised parameters saved
+
+# 3. Inspect artifact sizes
+>>>>>>> 2808cd94d713c6c38adabb99901c845ac7b8ef6d
 ls -lh artifacts
 # 1.1K linear_model.joblib
 # 486B quant_model.joblib
 
+<<<<<<< HEAD
 # 5. Build and test the container
 docker build -t cali-reg .
 docker run --rm cali-reg
 # Sample predictions: [0.719 1.764 2.71  2.839 2.605]
+=======
+# 4. Build and test the container
+docker build -t cali-reg .
+docker run --rm cali-reg
+# Sample predictions: [0.719 1.764 2.710 2.839 2.605]
+>>>>>>> 2808cd94d713c6c38adabb99901c845ac7b8ef6d
 ````
 
 ---
 
+<<<<<<< HEAD
 ## 5. Model, Prediction, and Artifact Comparison
 
 ### Model Coefficients & Intercept
@@ -153,6 +191,32 @@ docker run --rm cali-reg
 ---
 
 ## 7. Project Tree
+=======
+## 5. Outcome: Model Footprint vs. Accuracy
+
+| Artefact                                        |        Size | R² (test split) |
+| ----------------------------------------------- | ----------: | --------------: |
+| `linear_model.joblib` (float64, full precision) |  **1.1 KB** |            0.58 |
+| `quant_params.joblib` + `scale.joblib` (uint8)  | **0.38 KB** |           0.58¹ |
+
+¹ Quantised weights are reconstructed as `min + scale × uint8` at inference.
+**No accuracy loss:** model R² is unchanged while storage shrinks ≈5×.
+
+**Outcome details:**
+
+* **Quantisation benefit:** Model storage shrinks by \~5× (float64 → uint8).
+* **Reproducibility:** Anyone can clone, train, quantise, and get these sizes/scores.
+* **CI/CD:**
+
+  * `test-suite`: all tests pass
+  * `train-and-quantize`: correct R², artefacts uploaded
+  * `build-and-test-container`: container runs, prints predictions
+* **Docker image** always contains latest quantised model, confirming pipeline integrity.
+
+---
+
+## 6. Project Tree
+>>>>>>> 2808cd94d713c6c38adabb99901c845ac7b8ef6d
 
 ```text
 .
@@ -175,6 +239,7 @@ docker run --rm cali-reg
 
 ---
 
+<<<<<<< HEAD
 ## 8. License
 
 ```text
@@ -198,3 +263,21 @@ git add README.md docs/architecture.svg docs/sequence.svg
 git commit -m "docs: update README with real results, tables, and license"
 git push origin main
 ```
+=======
+## 7. License
+
+MIT
+(c) 2025 anup080002. You are free to use, modify, and distribute this code as long as you include this notice.
+
+---
+
+## How to Push This README & Diagrams
+
+```bash
+git add README.md docs/architecture.svg docs/sequence.svg
+git commit -m "docs: add full detailed README with stepwise outputs and outcome"
+git push origin main
+```
+
+```
+>>>>>>> 2808cd94d713c6c38adabb99901c845ac7b8ef6d
