@@ -10,6 +10,11 @@ This repository demonstrates a full MLOps workflow for a scikit-learn Linear Reg
 Every step—code, testing, model training, quantisation, Docker containerisation, and CI/CD—is implemented and reproducible.  
 
 **Key outcome:** Quantised model shrinks storage from **1.1 KB ➜ 0.49 KB (~2.2× smaller)** with **only minor accuracy loss (R² drops from 0.5758 to 0.4854)**.  
+<<<<<<< HEAD
+=======
+
+**Key outcome:** Quantised model shrinks storage from **1.1 KB ➜ 0.38 KB (~5× smaller)** with **no loss in accuracy (R² ≈ 0.58)**.  
+>>>>>>> 476a744c21466b2a54cab5f976b6a23433442af1
 
 ---
 
@@ -95,8 +100,13 @@ python -m src.predict_quant
 4.4. Check artifact sizes
 # ✔ Quantised parameters saved
 
+<<<<<<< HEAD
 4.5. Inspect artifact sizes
 
+=======
+# 3. Inspect artifact sizes
+>>>>>>> 
+>>>>>>> 476a744c21466b2a54cab5f976b6a23433442af1
 ls -lh artifacts
 # 1.1K linear_model.joblib
 # 486B quant_model.joblib
@@ -110,7 +120,11 @@ docker run --rm cali-reg
 docker build -t cali-reg .
 docker run --rm cali-reg
 # Sample predictions: [0.719 1.764 2.710 2.839 2.605]
+<<<<<<< HEAD
 
+=======
+>>>>>>> 
+>>>>>>> 476a744c21466b2a54cab5f976b6a23433442af1
 ````
 
 ---
@@ -236,4 +250,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 git add README.md docs/architecture.svg docs/sequence.svg
 git commit -m "docs: update README with real results, tables, and license"
 git push origin main
+<<<<<<< HEAD
 ```
+=======
+```
+
+>>>>>>> 476a744c21466b2a54cab5f976b6a23433442af1
