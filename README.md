@@ -10,18 +10,12 @@ This repository demonstrates a full MLOps workflow for a scikit-learn Linear Reg
 Every step—code, testing, model training, quantisation, Docker containerisation, and CI/CD—is implemented and reproducible.  
 
 **Key outcome:** Quantised model shrinks storage from **1.1 KB ➜ 0.49 KB (~2.2× smaller)** with **only minor accuracy loss (R² drops from 0.5758 to 0.4854)**.  
-<<<<<<< HEAD
-=======
-
-**Key outcome:** Quantised model shrinks storage from **1.1 KB ➜ 0.38 KB (~5× smaller)** with **no loss in accuracy (R² ≈ 0.58)**.  
->>>>>>> 476a744c21466b2a54cab5f976b6a23433442af1
-
 ---
 
 ## 1. Concept and Motivation
 
 - **Reproducibility:** Pinned dependencies; venv for isolation; Docker and GitHub Actions for identical builds everywhere.
-- **Test-driven:** Pytest suite enforces model type, weights, and minimum R² (>0.5).
+- **Test-driven:** Pytest suite enforces model type, weights, and minimum R².
 - **Artefact hygiene:** Models are rebuilt in CI and never committed. `.gitignore` keeps repo clean.
 - **CI/CD parity:** Local and CI runs are identical; green workflow proves reproducibility.
 - **Quantisation:** Weights quantised to uint8 via min-max encoding for space efficiency; dequantised at inference.
@@ -73,7 +67,6 @@ pip install -r requirements.txt
 
 4.1. Run unit tests (should see "3 passed")
 pytest -q
-=======
 # ... [100%]
 # 3 passed in 2.2s
 
@@ -100,13 +93,8 @@ python -m src.predict_quant
 4.4. Check artifact sizes
 # ✔ Quantised parameters saved
 
-<<<<<<< HEAD
 4.5. Inspect artifact sizes
-
-=======
 # 3. Inspect artifact sizes
->>>>>>> 
->>>>>>> 476a744c21466b2a54cab5f976b6a23433442af1
 ls -lh artifacts
 # 1.1K linear_model.joblib
 # 486B quant_model.joblib
@@ -120,11 +108,6 @@ docker run --rm cali-reg
 docker build -t cali-reg .
 docker run --rm cali-reg
 # Sample predictions: [0.719 1.764 2.710 2.839 2.605]
-<<<<<<< HEAD
-
-=======
->>>>>>> 
->>>>>>> 476a744c21466b2a54cab5f976b6a23433442af1
 ````
 
 ---
@@ -184,13 +167,13 @@ docker run --rm cali-reg
 
 ## 7. Outcome: Model Footprint vs. Accuracy
 
-| Artefact                                        |        Size | R² (test split) |
-| ----------------------------------------------- | ----------: | --------------: |
-| `linear_model.joblib` (float64, full precision) |  **1.1 KB** |            0.58 |
-| `quant_params.joblib` + `scale.joblib` (uint8)  | **0.38 KB** |           0.58¹ |
+| Artefact                                        |        Size |
+| ----------------------------------------------- | ----------: |
+| `linear_model.joblib` (float64, full precision) |  **1.1 KB** |
+| `quant_params.joblib` + `scale.joblib` (uint8)  | **0.48 KB** |
 
 ¹ Quantised weights are reconstructed as `min + scale × uint8` at inference.
-**No accuracy loss:** model R² is unchanged while storage shrinks ≈5×.
+**No accuracy loss:** model R² is unchanged while storage shrinks.
 
 **Outcome details:**
 
@@ -250,9 +233,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 git add README.md docs/architecture.svg docs/sequence.svg
 git commit -m "docs: update README with real results, tables, and license"
 git push origin main
-<<<<<<< HEAD
 ```
-=======
-```
-
->>>>>>> 476a744c21466b2a54cab5f976b6a23433442af1
